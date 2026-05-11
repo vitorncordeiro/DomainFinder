@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: domain_finder
+  data:
+    mongodb:
+      uri: ${MONGO_URI:mongodb://localhost:27017/domain_finder}
+      database: domain_finder
