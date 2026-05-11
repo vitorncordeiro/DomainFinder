@@ -1,7 +1,8 @@
 spring:
   application:
     name: domain_finder
-  data:
-    mongodb:
-      uri: ${MONGO_URI:mongodb://localhost:27017/domain_finder}
-      database: domain_finder
+  mongodb:
+      uri: {$MONGO_URI}
+logging:
+  level:
+    org.springframework.boot.context.config: DEBUG
