@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class DomainFinder {
 
 	public static void main(String[] args) {
-
 		SpringApplication.run(DomainFinder.class, args);
 	}
 

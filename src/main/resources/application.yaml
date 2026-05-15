@@ -2,7 +2,11 @@ spring:
   application:
     name: domain_finder
   mongodb:
-      uri: {$MONGO_URI}
+      uri: ${URI_MONGO}
+      database: domain_finder
+  data:
+    redis:
+      url: ${REDIS_URI}
 logging:
   level:
     org.springframework.boot.context.config: DEBUG
