@@ -4,6 +4,8 @@
 
 This project is a RESTful API that allows users to search for domain name availability. When a requested domain is unavailable, the service integrates with a Large Language Model (LLM) to generate creative alternative suggestions, which are then verified in parallel until ten available options are found and returned to the user.
 
+For every available domain found — whether the originally searched one or an AI-generated suggestion — the API automatically includes a direct registration link through the Hostinger affiliate program, allowing users to register the domain in one click without leaving the application.
+
 The service is built on an efficient architecture combining in-memory caching (Redis), a NoSQL database (MongoDB), and containerization (Docker), ensuring high performance and scalability.
 
 ### Main Goals
@@ -11,13 +13,14 @@ The service is built on an efficient architecture combining in-memory caching (R
 - Provide a fast and intuitive domain search experience.
 - Minimize redundant calls to the domain verification API through intelligent caching.
 - Leverage LLM capabilities to generate relevant and creative domain suggestions.
+- Surface a direct Hostinger registration link for every available domain found.
 - Simplify deployment in containerized environments.
 
 ---
 
 ## Technologies Used
 
-### Java 21
+### Java 17
 The latest LTS version of Java, focused on performance and modern language features.
 Documentation: https://docs.oracle.com/en/java/javase/17/
 
@@ -37,12 +40,16 @@ Documentation: https://www.mongodb.com/docs/
 The primary integration layer for all AI and external API communication. Spring AI provides a unified abstraction over LLM providers, eliminating the need for low-level HTTP clients like OpenFeign for those interactions. It handles prompt templating, model configuration, and response parsing out of the box, keeping the codebase clean and provider-agnostic.
 Documentation: https://docs.spring.io/spring-ai/reference/
 
+### Hostinger Affiliate Program
+When a domain is confirmed as available, the API builds a registration URL pointing to Hostinger through its affiliate program. The link is returned alongside each available domain in the response, so any frontend or consumer can render a direct "Register" button without any additional logic. The affiliate code is externalized as an environment variable, making it easy to update without touching the codebase.
+Affiliate program: https://www.hostinger.com/affiliates
+
 ### Docker
 A containerization platform used to create consistent and portable environments for deployment.
 Documentation: https://docs.docker.com/
 
-### Domain Verification API
-Integration with an external API (such as GoDaddy Domains API or Domainr) responsible for checking whether a given domain name is available for registration. This HTTP communication is handled through Spring AI's built-in REST client support, keeping the stack consistent without requiring a separate Feign dependency.
+### Domain Verification API (Apify)
+Integration with the Apify Domain Availability Checker actor, responsible for checking whether a given domain name is registered or available. The actor performs a DNS lookup first for speed, then a WHOIS query for detailed registration data including registrar, creation date, and expiry date. This HTTP communication is handled via Spring's native RestClient, keeping the stack lean without extra dependencies.
 
 ### LLM Integration (Anthropic Claude API)
 When a domain is unavailable, the service uses Spring AI's `ChatClient` to call the configured LLM provider and generate 20 to 30 creative domain name variations. The API then verifies each suggestion in parallel and returns the first ten available ones. Spring AI's abstraction makes it straightforward to swap providers (for example, from Claude to OpenAI) by changing configuration alone, without touching service logic.
@@ -53,8 +60,9 @@ When a domain is unavailable, the service uses Spring AI's `ChatClient` to call 
 
 - Search domain availability by name and TLD.
 - Automatic LLM-powered suggestions when a domain is taken.
-- Parallel verification of suggested domains with rate-limit control.
-- Smart caching with Redis to speed up repeated searches.
+- Batch verification of AI-generated suggestions through the Apify actor.
+- Smart caching with Redis to speed up repeated searches and preserve API quotas.
+- Direct Hostinger registration link returned for every available domain found.
 - Search history persistence with MongoDB.
 - Full Docker support for fast deployment in any environment.
 
@@ -70,17 +78,23 @@ GET /domains/search?name=mystore&tlds=.com,.io,.dev
 {
   "searched": "mystore.com",
   "available": false,
+  "registrationUrl": null,
   "suggestions": [
-    "getmystore.com",
-    "mystore.io",
-    "mystoreapp.com",
-    "trymystore.io",
-    "mystorelab.dev",
-    "usemystore.com",
-    "mystorehq.io",
-    "themystore.com",
-    "mystore.app",
-    "mystoreapi.dev"
+    {
+      "domain": "getmystore.com",
+      "available": true,
+      "registrationUrl": "https://www.hostinger.com/register-domain?domain=getmystore.com&REFERRALCODE=YOUR_CODE"
+    },
+    {
+      "domain": "mystore.io",
+      "available": true,
+      "registrationUrl": "https://www.hostinger.com/register-domain?domain=mystore.io&REFERRALCODE=YOUR_CODE"
+    },
+    {
+      "domain": "mystoreapp.com",
+      "available": true,
+      "registrationUrl": "https://www.hostinger.com/register-domain?domain=mystoreapp.com&REFERRALCODE=YOUR_CODE"
+    }
   ],
   "cachedResult": false
 }
@@ -97,11 +111,13 @@ src/
 ├── service/
 │   ├── DomainSearchService.java
 │   ├── DomainCheckService.java
-│   └── DomainSuggestionService.java
+│   ├── DomainSuggestionService.java
+│   └── AffiliateService.java
 ├── client/
 │   └── DomainApiClient.java
 ├── model/
 │   ├── DomainResult.java
+│   ├── DomainSearchResult.java
 │   └── SearchHistory.java
 └── cache/
     └── DomainCacheService.java
@@ -129,11 +145,13 @@ cd domain-search-api
 2. Set up environment variables. Create a `.env` file at the project root:
 
 ```env
-DOMAIN_API_KEY=your_domain_api_key
+APIFY_TOKEN=your_apify_token
+APIFY_ACTOR_ID=automation-lab~domain-availability-checker
 SPRING_AI_ANTHROPIC_API_KEY=your_anthropic_api_key
 REDIS_HOST=localhost
 REDIS_PORT=6379
 MONGO_URI=mongodb://localhost:27017/domainsearch
+HOSTINGER_AFFILIATE_CODE=your_affiliate_code
 ```
 
 3. Start the infrastructure containers:
