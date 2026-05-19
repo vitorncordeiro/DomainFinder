@@ -1,12 +1,25 @@
 spring:
-  application:
-    name: domain_finder
-  mongodb:
-      uri: ${URI_MONGO}
-      database: domain_finder
   data:
+    mongodb:
+      uri: ${MONGO_URI}
     redis:
-      url: ${REDIS_URI}
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            scope:
+              - openid
+              - email
+              - profile
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+  session:
+    store-type: redis
+    timeout: 7d
 logging:
   level:
     org.springframework.boot.context.config: DEBUG
