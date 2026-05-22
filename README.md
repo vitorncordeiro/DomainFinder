@@ -20,7 +20,7 @@ The service is built on an efficient architecture combining in-memory caching (R
 
 ## Technologies Used
 
-### Java 17
+### Java 21
 The latest LTS version of Java, focused on performance and modern language features.
 Documentation: https://docs.oracle.com/en/java/javase/17/
 
