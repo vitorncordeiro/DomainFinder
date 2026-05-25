@@ -1,5 +1,18 @@
 package com.domainsugester.domain_finder.security;
 
+import com.domainsugester.domain_finder.model.UserModel;
+import com.domainsugester.domain_finder.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.stereotype.Service;
+
+import java.time.Instant;
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
@@ -10,27 +23,23 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     @Override
     public OAuth2User loadUser(OAuth2UserRequest request) throws OAuth2AuthenticationException {
 
-        // 1. Let Spring fetch the user attributes from Google
         OAuth2User oAuth2User = delegate.loadUser(request);
         Map<String, Object> attributes = oAuth2User.getAttributes();
 
-        // 2. Extract the fields we care about
         String googleId = (String) attributes.get("sub");
         String name     = (String) attributes.get("name");
         String email    = (String) attributes.get("email");
         String picture  = (String) attributes.get("picture");
 
-        // 3. Find or create the user in MongoDB
-        User user = userRepository.findByGoogleId(googleId)
+        UserModel user = userRepository.findByGoogleId(googleId)
                 .map(existing -> updateExistingUser(existing, name, picture))
                 .orElseGet(() -> createNewUser(googleId, name, email, picture));
 
-        // 4. Return our custom principal
         return new AuthenticatedUser(user, attributes);
     }
 
-    private User createNewUser(String googleId, String name, String email, String picture) {
-        User newUser = User.builder()
+    private UserModel createNewUser(String googleId, String name, String email, String picture) {
+        UserModel newUser = UserModel.builder()
                 .googleId(googleId)
                 .name(name)
                 .email(email)
@@ -41,7 +50,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         return userRepository.save(newUser);
     }
 
-    private User updateExistingUser(User user, String name, String picture) {
+    private UserModel updateExistingUser(UserModel user, String name, String picture) {
         user.setName(name);
         user.setPictureUrl(picture);
         user.setLastLoginAt(Instant.now());
