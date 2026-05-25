@@ -1,8 +1,8 @@
-package com.domainsugester.domain_finder.security;
+package com.domainsugester.domain_finder.config;
 
+import com.domainsugester.domain_finder.security.CustomOAuth2UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -34,7 +34,7 @@ public class SecurityConfig {
 
                 .oauth2Login(oauth2 -> oauth2
                         .userInfoEndpoint(userInfo -> userInfo
-                                .userService(oAuth2UserService)  // plug in our custom service
+                                .userService(oAuth2UserService)
                         )
                         .successHandler(authenticationSuccessHandler())
                         .failureHandler(authenticationFailureHandler())
@@ -56,7 +56,6 @@ public class SecurityConfig {
         return (request, response, authentication) -> {
             // After a successful login, redirect to the frontend
             // In development, this could be http://localhost:3000
-            // In production, replace with your actual frontend URL
             response.sendRedirect("http://localhost:3000");
         };
     }
