@@ -54,9 +54,7 @@ public class SecurityConfig {
     @Bean
     public AuthenticationSuccessHandler authenticationSuccessHandler() {
         return (request, response, authentication) -> {
-            // After a successful login, redirect to the frontend
-            // In development, this could be http://localhost:3000
-            response.sendRedirect("http://localhost:3000");
+            response.sendRedirect("http://localhost:5173");
         };
     }
 
