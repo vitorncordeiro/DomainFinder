@@ -25,7 +25,7 @@ Users can authenticate with their Google account to access their personal search
 
 ### Java 21
 The latest LTS version of Java, focused on performance and modern language features.
-Documentation: https://docs.oracle.com/en/java/javase/17/
+Documentation: https://docs.oracle.com/en/java/javase/21/
 
 ### Spring Boot 3
 The core application framework, providing auto-configuration, dependency injection, scheduling, and the embedded web server.
