@@ -1,10 +1,7 @@
 spring:
   data:
-    mongodb:
-      uri: ${MONGO_URI}
     redis:
-      host: ${REDIS_HOST}
-      port: ${REDIS_PORT}
+      url: ${REDIS_URI}
   security:
     oauth2:
       client:
@@ -20,6 +17,8 @@ spring:
   session:
     store-type: redis
     timeout: 7d
+  mongodb:
+    uri: ${MONGO_URI}
 logging:
   level:
     org.springframework.boot.context.config: DEBUG
