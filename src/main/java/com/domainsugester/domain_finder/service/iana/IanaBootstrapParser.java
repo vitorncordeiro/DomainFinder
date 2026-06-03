@@ -12,7 +12,7 @@ public class IanaBootstrapParser {
         Map<String, String> map = new HashMap<>();
         bootstrap.services().forEach(pair -> {
             String rdapUrl = pair.get(1).get(0);
-            pair.get(0).forEach(tld -> map.put(tld, rdapUrl));
+            pair.get(0).forEach(tld -> map.put(("iana:tld:" + tld), rdapUrl));
         });
         return map;
     }
