@@ -1,4 +1,5 @@
 package com.domainsugester.domain_finder.controller;
+import com.domainsugester.domain_finder.dto.response.CacheBootstrapResponse;
 import com.domainsugester.domain_finder.service.iana.IanaBootstrapService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,8 +15,9 @@ public class IanaBootstrapController {
     private final IanaBootstrapService bootstrapService;
 
     @GetMapping
-    public ResponseEntity<IanaBootstrapController> getCachedBootstrap(){
-        return ResponseEntity.ok().body(null);
+    public ResponseEntity<CacheBootstrapResponse> getCachedBootstrap(){
+        var response = bootstrapService.getCachedBootstrap();
+        return ResponseEntity.ok().body(response);
 
     }
 
