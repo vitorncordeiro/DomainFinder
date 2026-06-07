@@ -1,7 +1,8 @@
 spring:
   data:
     redis:
-      url: ${REDIS_URI}
+      port: 6379
+      host: localhost
   security:
     oauth2:
       client:
@@ -18,7 +19,9 @@ spring:
     store-type: redis
     timeout: 7d
   mongodb:
-    uri: ${MONGO_URI}
+    uri: mongodb://admin:admin123@localhost:27017/domainfinder?authSource=admin
 logging:
   level:
     org.springframework.boot.context.config: DEBUG
+iana:
+  base-url: ${IANA_BASE_URL}
