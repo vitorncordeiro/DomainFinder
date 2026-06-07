@@ -3,6 +3,7 @@ package com.domainsugester.domain_finder.cache;
 import com.domainsugester.domain_finder.dto.response.CacheBootstrapResponse;
 import com.domainsugester.domain_finder.mapper.CacheBootstrapMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ScanOptions;
@@ -16,27 +17,23 @@ import java.util.*;
 @RequiredArgsConstructor
 public class IanaBootstrapCacheService {
     private final RedisTemplate<String, Object> redisTemplate;
-    private final ValueOperations<String, Object> ops = redisTemplate.opsForValue();
-
 
     public void save(String key, String value, Duration ttl){
+        ValueOperations<String, Object> ops = redisTemplate.opsForValue();
         ops.set(key, value, ttl);
     }
 
-    public Optional<String> fetchTldServer(String tld){
-        String tldServer = ops.get(tld).toString();
-        return Optional.ofNullable(tldServer);
-    }
     public CacheBootstrapResponse fetchBootstrap(){
+        ValueOperations<String, Object> ops = redisTemplate.opsForValue();
         Set<String> keys = scanKeys("iana:tld:*");
         Map<String, String> map = new HashMap<>();
         keys.forEach(key -> {
             map.put(key, ops.get(key).toString());
         });
-        Optional<String> description = Optional.ofNullable(ops.get("iana:description").toString());
-        Optional<String> version = Optional.ofNullable(ops.get("iana:version").toString());
+        String description = ops.get("iana:description").toString();
+        String version = ops.get("iana:version").toString();
 
-        return CacheBootstrapMapper.toCacheResponse(map, description.toString(), version.toString());
+        return CacheBootstrapMapper.toCacheResponse(map, description, version);
     }
     private Set<String> scanKeys(String keyPrefix){
         Set<String> keys = new HashSet<>();
