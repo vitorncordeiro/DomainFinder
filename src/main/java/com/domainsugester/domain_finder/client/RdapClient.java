@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-@FeignClient(name="RdapClient", url="${RDAP_BASE_URL}")
+@FeignClient(name="RdapClient")
 public interface RdapClient {
 
     @GetMapping("/domain")
