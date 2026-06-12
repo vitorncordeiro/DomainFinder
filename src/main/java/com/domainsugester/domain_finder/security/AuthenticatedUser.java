@@ -2,25 +2,27 @@ package com.domainsugester.domain_finder.security;
 
 import com.domainsugester.domain_finder.model.UserModel;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.oidc.OidcIdToken;
+import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+@RequiredArgsConstructor
 @Getter
-public class AuthenticatedUser implements OAuth2User, UserDetails {
+public class AuthenticatedUser implements OidcUser, UserDetails {
 
     private final UserModel user;
-    private final Map<String, Object> attributes;
+    private final OidcUser oidcUser;
 
-    public AuthenticatedUser(UserModel user, Map<String, Object> attributes) {
-        this.user = user;
-        this.attributes = attributes;
-    }
+
 
     @Override
     public String getName() {
@@ -29,7 +31,7 @@ public class AuthenticatedUser implements OAuth2User, UserDetails {
 
     @Override
     public Map<String, Object> getAttributes() {
-        return attributes;
+        return oidcUser.getAttributes();
     }
 
     @Override
@@ -55,4 +57,19 @@ public class AuthenticatedUser implements OAuth2User, UserDetails {
 
     @Override
     public boolean isEnabled() { return true; }
+
+    @Override
+    public Map<String, Object> getClaims() {
+        return Map.of();
+    }
+
+    @Override
+    public OidcUserInfo getUserInfo() {
+        return null;
+    }
+
+    @Override
+    public OidcIdToken getIdToken() {
+        return null;
+    }
 }

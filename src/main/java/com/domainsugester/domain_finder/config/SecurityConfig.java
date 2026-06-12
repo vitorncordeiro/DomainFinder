@@ -1,6 +1,6 @@
 package com.domainsugester.domain_finder.config;
 
-import com.domainsugester.domain_finder.security.CustomOAuth2UserService;
+import com.domainsugester.domain_finder.security.CustomOidcUserService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +16,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final CustomOAuth2UserService oAuth2UserService;
+    private final CustomOidcUserService oidcUserService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
@@ -34,7 +34,7 @@ public class SecurityConfig {
 
                 .oauth2Login(oauth2 -> oauth2
                         .userInfoEndpoint(userInfo -> userInfo
-                                .userService(oAuth2UserService)
+                                .oidcUserService(oidcUserService)
                         )
                         .successHandler(authenticationSuccessHandler())
                         .failureHandler(authenticationFailureHandler())
