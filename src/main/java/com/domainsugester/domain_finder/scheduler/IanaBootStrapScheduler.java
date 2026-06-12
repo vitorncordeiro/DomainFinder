@@ -5,6 +5,7 @@ import com.domainsugester.domain_finder.client.IanaBootstrapClient;
 import com.domainsugester.domain_finder.dto.external.iana.IanaBootstrapResponse;
 import com.domainsugester.domain_finder.service.iana.IanaBootstrapParser;
 import com.domainsugester.domain_finder.service.iana.IanaBootstrapService;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.retry.annotation.Retryable;
@@ -18,7 +19,12 @@ import java.util.Map;
 public class IanaBootStrapScheduler {
     private final IanaBootstrapService service;
 
-    @Scheduled
+    @PostConstruct
+    public void init() {
+        refresh();
+    }
+
+    @Scheduled(fixedRate = 7 * 24 * 60 * 60 * 1000L)
     @Retryable(
             retryFor = Exception.class,
             maxAttempts = 5,

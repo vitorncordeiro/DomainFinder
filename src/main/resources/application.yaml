@@ -19,7 +19,7 @@ spring:
     store-type: redis
     timeout: 7d
   mongodb:
-    uri: mongodb://admin:admin123@localhost:27017/domainfinder?authSource=admin
+    uri: ${MONGO_URI}
 logging:
   level:
     org.springframework.boot.context.config: DEBUG
