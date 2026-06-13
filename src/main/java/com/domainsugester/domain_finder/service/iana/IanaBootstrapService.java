@@ -18,13 +18,15 @@ public class IanaBootstrapService {
     private final IanaBootstrapClient ianaBootstrapClient;
     private final Duration TTL = Duration.ofDays(10);
 
-    public void refreshIanaBootStrap(){
+    public Map<String, String> refreshIanaBootStrap(){
 
         IanaBootstrapResponse ianaResponse = ianaBootstrapClient.getIanaBootstrap();
-        Map<String, String> keyValues = ianaBootstrapParser.parseRawBootstrap(ianaResponse);
-        keyValues.forEach((key, value) -> {
+        Map<String, String> parsedBootStrap = ianaBootstrapParser.parseRawBootstrap(ianaResponse);
+        parsedBootStrap.forEach((key, value) -> {
             ianaBootstrapCacheService.save(key, value, TTL);
         });
+
+        return parsedBootStrap;
     }
     public CacheBootstrapResponse getCachedBootstrap(){
         return ianaBootstrapCacheService.fetchBootstrap();
