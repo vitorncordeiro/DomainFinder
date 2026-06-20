@@ -22,6 +22,7 @@ public class IanaBootstrapService {
 
         IanaBootstrapResponse ianaResponse = ianaBootstrapClient.getIanaBootstrap();
         Map<String, String> parsedBootStrap = ianaBootstrapParser.parseRawBootstrap(ianaResponse);
+
         parsedBootStrap.forEach((key, value) -> {
             ianaBootstrapCacheService.save(key, value, TTL);
         });

@@ -1,10 +1,10 @@
 package com.domainsugester.domain_finder.dto.external.Hostinger;
 
-import java.util.List;
+import java.util.Set;
 
 public record HostingerTldAvaliabilityRequest(
     String domain,
-    List<String> tlds,
+    Set<String> tlds,
     Boolean withAlternatives
 ) {
 }

@@ -6,9 +6,10 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
+import java.util.Set;
 
 @FeignClient(name="hostingerClient", url="${HOSTINGER_BASE_URL}")
 public interface HostingerClient {
     @PostMapping("/api/domains/v1/availability")
-    List<HostingerTldAvaliabilityResponse> getHostingerTldAvaliabilities(HostingerTldAvaliabilityRequest request);
+    Set<HostingerTldAvaliabilityResponse> getHostingerTldAvaliabilities(HostingerTldAvaliabilityRequest request);
 }
