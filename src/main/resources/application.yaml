@@ -25,3 +25,6 @@ logging:
     org.springframework.boot.context.config: DEBUG
 iana:
   base-url: ${IANA_BASE_URL}
+hostinger:
+  api:
+    token: ${HOSTINGER_API_TOKEN}
