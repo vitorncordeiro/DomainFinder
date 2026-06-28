@@ -1,7 +1,7 @@
 package com.domainsugester.domain_finder.service.hostinger;
 
 import com.domainsugester.domain_finder.client.HostingerClient;
-import com.domainsugester.domain_finder.dto.external.Hostinger.HostingerTldAvaliabilityRequest;
+import com.domainsugester.domain_finder.dto.external.Hostinger.HostingerTldAvailabilityRequest;
 import com.domainsugester.domain_finder.dto.external.Hostinger.HostingerTldAvaliabilityResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +21,7 @@ public class HostingerTldAvailabilityService {
     private static final int DOMAIN_LENGTH = 16;
 
     public Set<String> getAvaliableTldSet(Set<String> tldSet) {
+        tldSet = filterTlds(tldSet);
         int batchSize = (tldSet.size() + 2) / 3;
         var batches = splitIntoBatches(tldSet, batchSize);
         Set<String> avaliableTlds = new HashSet<>();
@@ -30,14 +31,26 @@ public class HostingerTldAvailabilityService {
         }
         return avaliableTlds;
     }
+
+    private Set<String> filterTlds(Set<String> tldSet){
+        return  tldSet.stream()
+                .map(tld -> tld.substring(9))
+                .filter(tld -> !tld.startsWith("xn--"))
+                .collect(Collectors.toSet());
+    }
     private Set<HostingerTldAvaliabilityResponse> executeRequestBatch(List<Set<String>> subSets, String domain){
         List<Set<HostingerTldAvaliabilityResponse>> responseBatches = subSets.parallelStream()
                 .map(subSet -> {
-                    HostingerTldAvaliabilityRequest request = new HostingerTldAvaliabilityRequest(
+                    HostingerTldAvailabilityRequest request = new HostingerTldAvailabilityRequest(
                             domain,
                             subSet,
                             false
                     );
+                    System.out.println("Request: " + request);
+
+                    var a = hostingerClient.getHostingerTldAvaliabilities(request);
+                    System.out.println(a);
+
                     return hostingerClient.getHostingerTldAvaliabilities(request);
                 })
                 .toList();
@@ -74,7 +87,7 @@ public class HostingerTldAvailabilityService {
     }
     private Set<String> extractAvailableTldSet(Set<HostingerTldAvaliabilityResponse> responses){
         return responses.stream()
-                .filter(HostingerTldAvaliabilityResponse::isAvaliable)
+                .filter(HostingerTldAvaliabilityResponse::isAvailable)
                 .map(avaliable -> {
                     String domain = avaliable.domain();
                     return domain.substring(domain.indexOf('.') + 1);

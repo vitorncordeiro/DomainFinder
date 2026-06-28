@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Set;
 
-public record HostingerTldAvaliabilityRequest(
+public record HostingerTldAvailabilityRequest(
     String domain,
     Set<String> tlds,
     @JsonProperty("with_alternatives")

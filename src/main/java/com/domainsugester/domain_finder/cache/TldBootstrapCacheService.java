@@ -3,7 +3,6 @@ package com.domainsugester.domain_finder.cache;
 import com.domainsugester.domain_finder.dto.response.CacheBootstrapResponse;
 import com.domainsugester.domain_finder.mapper.CacheBootstrapMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ScanOptions;
@@ -15,12 +14,13 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class IanaBootstrapCacheService {
+public class TldBootstrapCacheService {
     private final RedisTemplate<String, Object> redisTemplate;
+    private final Duration TTL = Duration.ofDays(10);
 
-    public void save(String key, String value, Duration ttl){
+    public void save(String key, String value){
         ValueOperations<String, Object> ops = redisTemplate.opsForValue();
-        ops.set(key, value, ttl);
+        ops.set(key, value, TTL);
     }
 
     public CacheBootstrapResponse fetchBootstrap(){

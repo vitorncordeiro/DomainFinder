@@ -1,5 +1,6 @@
 package com.domainsugester.domain_finder.scheduler;
 
+import com.domainsugester.domain_finder.service.TldBootStrapService;
 import com.domainsugester.domain_finder.service.hostinger.HostingerTldAvailabilityService;
 import com.domainsugester.domain_finder.service.iana.IanaBootstrapService;
 import jakarta.annotation.PostConstruct;
@@ -14,8 +15,7 @@ import java.util.Map;
 @Component
 @RequiredArgsConstructor
 public class TldBootStrapScheduler {
-    private final IanaBootstrapService ianaBootstrapService;
-    private final HostingerTldAvailabilityService hostingerTldAvailabilityService;
+    private final TldBootStrapService tldBootStrapService;
 
     @PostConstruct
     public void init() {
@@ -29,10 +29,6 @@ public class TldBootStrapScheduler {
             backoff = @Backoff(delay = 5000, multiplier = 2)
     )
     public void refresh(){
-        Map<String, String> parsedIanaBootStrap = ianaBootstrapService.refreshIanaBootStrap();
-
-
+        tldBootStrapService.refreshBootstrap();
     }
-
-
 }

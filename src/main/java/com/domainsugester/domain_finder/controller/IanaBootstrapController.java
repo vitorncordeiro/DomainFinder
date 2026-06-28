@@ -23,7 +23,7 @@ public class IanaBootstrapController {
 
     @PostMapping("/refresh")
     public ResponseEntity<Void> refreshIanaBootStrap(){
-        bootstrapService.refreshIanaBootStrap();
+        bootstrapService.getIanaParsedBootstrap();
         return ResponseEntity.accepted().build();
     }
 }
