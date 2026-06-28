@@ -1,4 +1,4 @@
-# Domain Availability Search API
+# Sterna
 
 ## About the Project
 
