@@ -12,7 +12,7 @@ import java.util.Set;
 @FeignClient(name="hostingerClient", url="${HOSTINGER_BASE_URL}", configuration = FeignConfig.class)
 public interface HostingerClient {
     @PostMapping(
-            value="/api/domains/v1/availability",
+            value="/api-proxy/api/available-tlds-by-theme",
     consumes = "application/json",
     produces = "application/json")
 
