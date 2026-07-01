@@ -1,8 +1,6 @@
 package com.domainsugester.domain_finder.scheduler;
 
-import com.domainsugester.domain_finder.service.TldBootStrapService;
-import com.domainsugester.domain_finder.service.hostinger.HostingerTldAvailabilityService;
-import com.domainsugester.domain_finder.service.iana.IanaBootstrapService;
+import com.domainsugester.domain_finder.service.TldService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -10,12 +8,10 @@ import org.springframework.retry.annotation.Retryable;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
-
 @Component
 @RequiredArgsConstructor
-public class TldBootStrapScheduler {
-    private final TldBootStrapService tldBootStrapService;
+public class TldScheduler {
+    private final TldService tldBootStrapService;
 
     @PostConstruct
     public void init() {
