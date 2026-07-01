@@ -1,12 +1,9 @@
 package com.domainsugester.domain_finder.dto.response;
 
-import com.domainsugester.domain_finder.cache.TldCacheService;
-
 import java.util.Map;
 
-public record IanaTldCachedBootstrap(
+public record IanaTldCachedResponse(
         String description,
         String version,
         Map<String, String> tlds
-) implements TldCachedResponse {
-}
+) implements TldCachedResponse {}
