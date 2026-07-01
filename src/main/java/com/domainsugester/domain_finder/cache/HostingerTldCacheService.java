@@ -20,6 +20,7 @@ import java.util.Set;
 public class HostingerTldCacheService implements TldCacheService {
     private final RedisTemplate<String, Object> redisTemplate;
     private final Duration TTL = Duration.ofDays(10);
+
     @Override
     public void save(String key, String value) {
         ValueOperations<String, Object> ops = redisTemplate.opsForValue();

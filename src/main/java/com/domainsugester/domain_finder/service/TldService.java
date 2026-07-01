@@ -23,6 +23,7 @@ public class TldService {
         parsedIanaBootStrap.forEach((tld, rdapUrl) -> {
             ianaTldCacheService.save(tld, rdapUrl);
         });
+
         Map<String, String> hostingerTlds = hostingerTldAvailabilityService.getAvailableTlds();
         hostingerTlds.forEach((tld, rdapUrl) -> {
             hostingerTldCacheService.save(tld, rdapUrl);

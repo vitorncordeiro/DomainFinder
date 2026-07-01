@@ -35,12 +35,15 @@ public class IanaBootstrapCacheService implements TldCacheService{
         keys.forEach(key -> {
             map.put(key, ops.get(key).toString());
         });
-
-        return new IanaTldCachedResponse(map);
+        String version = ops.get("iana:version").toString();
+        String description = ops.get("iana:description").toString();
+        return new IanaTldCachedResponse(description, version, map);
     }
     public String get(String key) {
         ValueOperations<String, Object> ops = redisTemplate.opsForValue();
-        return ops.get(key).toString();
+        var value = ops.get(key);
+        if(value == null) return null;
+        return value.toString();
     }
     private Set<String> scanKeys(String keyPrefix){
         Set<String> keys = new HashSet<>();

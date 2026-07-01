@@ -42,6 +42,7 @@ public class HostingerTldAvailabilityService implements TldAvailabilityService {
             log.info("TLDs Successfully catched. Status: {}", response.status());
 
             browser.close();
+            System.out.println(result);
             return parseAvaliableTlds(result);
 
         } catch (Exception e) {
@@ -54,8 +55,10 @@ public class HostingerTldAvailabilityService implements TldAvailabilityService {
         String[] tldArray = tlds.split(",");
         for (String tld : tldArray) {
             tld = tld.substring(1, tld.length() - 1);
+            System.out.println(tld);
             map.put("hostinger:tld:" + tld, getRdapUrl(tld));
         }
+
         return map;
     }
     @Override
@@ -63,7 +66,13 @@ public class HostingerTldAvailabilityService implements TldAvailabilityService {
         if(tld.contains(".")){
             tld = tld.split("\\.")[1];
         }
-        return ianaBootstrapCacheService.get("iana:tld:" + tld);
+        String rdapUrl = ianaBootstrapCacheService.get("iana:tld:" + tld);
+
+        if(rdapUrl == null){
+            return "unavailable";
+        }
+        System.out.println(rdapUrl);
+        return rdapUrl;
     }
 
 

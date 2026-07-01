@@ -1,7 +1,7 @@
 package com.domainsugester.domain_finder.service;
 
 import com.domainsugester.domain_finder.client.RdapClient;
-import com.domainsugester.domain_finder.dto.external.ApifyDomainResponse;
+
 import com.domainsugester.domain_finder.dto.request.DomainRequest;
 import com.domainsugester.domain_finder.dto.response.DomainResponse;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ public class DomainService {
     private RdapClient feignClient;
 
     public DomainResponse getDomain(DomainRequest request){
-        List<ApifyDomainResponse> responses = feignClient.getDomain(request);
+
         return null;
     }
 }
