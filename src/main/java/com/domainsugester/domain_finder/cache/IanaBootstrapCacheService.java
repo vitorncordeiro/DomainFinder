@@ -17,27 +17,25 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
-public class HostingerTldCacheService implements TldCacheService {
+public class IanaBootstrapCacheService implements TldCacheService{
     private final RedisTemplate<String, Object> redisTemplate;
     private final Duration TTL = Duration.ofDays(10);
+
     @Override
     public void save(String key, String value) {
         ValueOperations<String, Object> ops = redisTemplate.opsForValue();
         ops.set(key, value, TTL);
     }
-
     @Override
     public CacheBootstrapResponse fetchBootstrap() {
         ValueOperations<String, Object> ops = redisTemplate.opsForValue();
-        Set<String> keys = scanKeys("iana:tld:*");
+        Set<String> keys = scanKeys("hostinger:tld:*");
         Map<String, String> map = new HashMap<>();
         keys.forEach(key -> {
             map.put(key, ops.get(key).toString());
         });
-        String description = ops.get("iana:description").toString();
-        String version = ops.get("iana:version").toString();
 
-        return CacheBootstrapMapper.toCacheResponse(map, description, version);
+        return null;
     }
     private Set<String> scanKeys(String keyPrefix){
         Set<String> keys = new HashSet<>();
