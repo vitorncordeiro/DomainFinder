@@ -28,3 +28,6 @@ iana:
 hostinger:
   api:
     token: ${HOSTINGER_API_TOKEN}
+playwright:
+  server:
+    url: ws://localhost:3000
