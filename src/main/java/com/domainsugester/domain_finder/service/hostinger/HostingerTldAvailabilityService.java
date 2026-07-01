@@ -1,7 +1,10 @@
 package com.domainsugester.domain_finder.service.hostinger;
 
+import com.domainsugester.domain_finder.cache.IanaBootstrapCacheService;
 import com.domainsugester.domain_finder.dto.external.iana.IanaBootstrapResponse;
+import com.domainsugester.domain_finder.service.TldAvailabilityService;
 import com.microsoft.playwright.*;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -9,10 +12,12 @@ import java.util.*;
 
 @Slf4j
 @Service
-public class HostingerTldAvailabilityService {
+@RequiredArgsConstructor
+public class HostingerTldAvailabilityService implements TldAvailabilityService {
 
     @Value("${playwright.server.url:}")
     private String playwrightServerUrl;
+    private final IanaBootstrapCacheService ianaBootstrapCacheService;
 
     public Map<String, String> getAvailableTlds() {
         try (Playwright playwright = Playwright.create(
@@ -49,8 +54,17 @@ public class HostingerTldAvailabilityService {
         String[] tldArray = tlds.split(",");
         for (String tld : tldArray) {
             tld = tld.substring(1, tld.length() - 1);
-            map.put("hostinger:tld:" + tld, tld);
+            map.put("hostinger:tld:" + tld, getRdapUrl(tld));
         }
         return map;
     }
+    @Override
+    public String getRdapUrl(String tld){
+        if(tld.contains(".")){
+            tld = tld.split("\\.")[1];
+        }
+        return ianaBootstrapCacheService.get("iana:tld:" + tld);
+    }
+
+
 }

@@ -1,5 +1,6 @@
 package com.domainsugester.domain_finder.cache;
 
+import com.domainsugester.domain_finder.dto.response.IanaTldCachedResponse;
 import com.domainsugester.domain_finder.dto.response.TldCachedResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.Cursor;
@@ -25,6 +26,7 @@ public class IanaBootstrapCacheService implements TldCacheService{
         ValueOperations<String, Object> ops = redisTemplate.opsForValue();
         ops.set(key, value, TTL);
     }
+
     @Override
     public TldCachedResponse fetchBootstrap() {
         ValueOperations<String, Object> ops = redisTemplate.opsForValue();
@@ -34,7 +36,11 @@ public class IanaBootstrapCacheService implements TldCacheService{
             map.put(key, ops.get(key).toString());
         });
 
-        return null;
+        return new IanaTldCachedResponse(map);
+    }
+    public String get(String key) {
+        ValueOperations<String, Object> ops = redisTemplate.opsForValue();
+        return ops.get(key).toString();
     }
     private Set<String> scanKeys(String keyPrefix){
         Set<String> keys = new HashSet<>();
