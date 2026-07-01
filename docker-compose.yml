@@ -7,6 +7,10 @@ services:
     volumes:
       - redis_data:/data
     restart: unless-stopped
-
+  playwright:
+    image: mcr.microsoft.com/playwright:v1.61.1-jammy
+    command: npx playwright run-server --port 3000 --host 0.0.0.0
+    ports:
+      - "3000:3000"
 volumes:
   redis_data:
