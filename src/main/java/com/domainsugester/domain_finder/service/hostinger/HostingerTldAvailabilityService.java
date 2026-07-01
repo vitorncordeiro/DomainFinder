@@ -1,5 +1,6 @@
 package com.domainsugester.domain_finder.service.hostinger;
 
+import com.domainsugester.domain_finder.dto.external.iana.IanaBootstrapResponse;
 import com.microsoft.playwright.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,7 +14,7 @@ public class HostingerTldAvailabilityService {
     @Value("${playwright.server.url:}")
     private String playwrightServerUrl;
 
-    public String getAvailableTlds() {
+    public Map<String, String> getAvailableTlds() {
         try (Playwright playwright = Playwright.create(
                 new Playwright.CreateOptions()
                         .setEnv(Map.of("PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD", "1"))
@@ -36,10 +37,20 @@ public class HostingerTldAvailabilityService {
             log.info("TLDs Successfully catched. Status: {}", response.status());
 
             browser.close();
-            return result;
+            return parseAvaliableTlds(result);
 
         } catch (Exception e) {
             throw new RuntimeException("Error while capturing TLDs", e);
         }
+    }
+    private Map<String, String> parseAvaliableTlds(String tlds){
+        Map<String, String> map = new HashMap<>();
+        tlds = tlds.substring(tlds.indexOf("[") + 1, tlds.lastIndexOf("]"));
+        String[] tldArray = tlds.split(",");
+        for (String tld : tldArray) {
+            tld = tld.substring(1, tld.length() - 1);
+            map.put("hostinger:tld:" + tld, tld);
+        }
+        return map;
     }
 }
