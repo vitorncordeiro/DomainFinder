@@ -3,7 +3,7 @@ package com.domainsugester.domain_finder.service.iana;
 import com.domainsugester.domain_finder.cache.TldCacheService;
 import com.domainsugester.domain_finder.client.IanaBootstrapClient;
 import com.domainsugester.domain_finder.dto.external.iana.IanaBootstrapResponse;
-import com.domainsugester.domain_finder.dto.response.CacheBootstrapResponse;
+import com.domainsugester.domain_finder.dto.response.TldCachedResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +25,7 @@ public class IanaBootstrapService {
 
         return parsedBootStrap;
     }
-    public CacheBootstrapResponse getCachedBootstrap(){
+    public TldCachedResponse getCachedBootstrap(){
         return ianaBootstrapCacheService.fetchBootstrap();
     }
 
