@@ -17,7 +17,7 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
-public class HostingerTldBootstrapCacheService implements TldBootstrapCacheService {
+public class HostingerTldBootstrapCacheService implements TldCacheService {
     private final RedisTemplate<String, Object> redisTemplate;
     private final Duration TTL = Duration.ofDays(10);
     @Override
