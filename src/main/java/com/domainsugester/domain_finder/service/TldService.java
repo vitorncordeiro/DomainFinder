@@ -19,16 +19,11 @@ public class TldBootStrapService {
 
     public void refreshBootstrap(){
         Map<String, String> parsedIanaBootStrap = ianaBootstrapService.getIanaParsedBootstrap();
-        Set<String> avaliableTlds = availabilityService.getAvaliableTldSet(parsedIanaBootStrap.keySet());
-
         parsedIanaBootStrap.forEach((tld, rdapUrl) -> {
-            if(!avaliableTlds.contains(tld)){
-                parsedIanaBootStrap.remove(tld);
-            }
+            tldBootstrapCacheService.save(tld, rdapUrl);
         });
-        parsedIanaBootStrap.forEach((tld, rdapUrl) -> {
-            tldBootstrapCacheService.save("iana:tld:" + tld, rdapUrl);
-        });
+        System.out.println(availabilityService.getAvailableTlds());
     }
+    private
 
 }
