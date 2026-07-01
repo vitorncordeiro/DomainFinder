@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class TldScheduler {
-    private final TldService tldBootStrapService;
+    private final TldService tldService;
 
     @PostConstruct
     public void init() {
@@ -25,6 +25,6 @@ public class TldScheduler {
             backoff = @Backoff(delay = 5000, multiplier = 2)
     )
     public void refresh(){
-        tldBootStrapService.refreshBootstrap();
+        tldService.refreshBootstrap();
     }
 }
