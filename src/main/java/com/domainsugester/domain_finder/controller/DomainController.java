@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/domains")
 @RequiredArgsConstructor
 public class DomainController {
-    private DomainService domainService;
+    private final DomainService domainService;
 
     @PostMapping("/{domain}")
-    public ResponseEntity<DomainResponse> getDomain(@PathVariable DomainRequest domain){
+    public ResponseEntity<DomainResponse> getDomain(@PathVariable String domain){
         DomainResponse response = domainService.getDomain(domain);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

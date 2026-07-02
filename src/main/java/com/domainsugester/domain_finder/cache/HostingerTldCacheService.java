@@ -26,6 +26,10 @@ public class HostingerTldCacheService implements TldCacheService {
         ValueOperations<String, Object> ops = redisTemplate.opsForValue();
         ops.set(key, value, TTL);
     }
+    public String fetchRdapUrl(String tld){
+        ValueOperations<String, Object> ops = redisTemplate.opsForValue();
+        return ops.get("hostinger:tld:" + tld).toString();
+    }
 
     @Override
     public TldCachedResponse fetchBootstrap() {
