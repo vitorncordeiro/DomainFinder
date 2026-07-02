@@ -30,15 +30,13 @@ public class HostingerTldCacheService implements TldCacheService {
     @Override
     public TldCachedResponse fetchBootstrap() {
         ValueOperations<String, Object> ops = redisTemplate.opsForValue();
-        Set<String> keys = scanKeys("iana:tld:*");
+        Set<String> keys = scanKeys("hostinger:tld:*");
         Map<String, String> map = new HashMap<>();
         keys.forEach(key -> {
             map.put(key, ops.get(key).toString());
         });
-        String description = ops.get("iana:description").toString();
-        String version = ops.get("iana:version").toString();
 
-        return CacheBootstrapMapper.toIanaCacheResponse(map, description, version);
+        return CacheBootstrapMapper.toHosingerCacheResponse(map);
     }
     private Set<String> scanKeys(String keyPrefix){
         Set<String> keys = new HashSet<>();
