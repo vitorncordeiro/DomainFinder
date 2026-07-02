@@ -18,8 +18,8 @@ public class DomainController {
     private final DomainService domainService;
 
     @PostMapping("/{domain}")
-    public ResponseEntity<DomainResponse> getDomain(@PathVariable String domain){
-        DomainResponse response = domainService.getDomain(domain);
+    public ResponseEntity<String> getDomain(@PathVariable String domain){
+        String response = domainService.getDomain(domain);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }

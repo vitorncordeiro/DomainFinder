@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.net.URI;
-import java.util.List;
+import java.util.Optional;
 
 @FeignClient(name="RdapClient", url="${rdap.client.url}")
-public interface RdapClient {
+public interface RdapClient{
     @GetMapping("/domain/{domain}")
     Object getDomainInfo(URI uri, @PathVariable String domain);
 }
