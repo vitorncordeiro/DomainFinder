@@ -31,3 +31,6 @@ hostinger:
 playwright:
   server:
     url: ws://localhost:3000
+rdap:
+  client:
+    url: http://rdap.org
