@@ -24,6 +24,7 @@ logging:
   level:
     org.springframework.boot.context.config: DEBUG
 iana:
+  data-base-url: ${IANA_DATA_BASE_URL}
   base-url: ${IANA_BASE_URL}
 hostinger:
   api:
