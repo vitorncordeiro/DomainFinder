@@ -1,7 +1,7 @@
 package com.domainsugester.domain_finder.service.hostinger;
 
-import com.domainsugester.domain_finder.cache.IanaBootstrapCacheService;
-import com.domainsugester.domain_finder.dto.external.iana.IanaBootstrapResponse;
+import com.domainsugester.domain_finder.service.WhoisService;
+import com.domainsugester.domain_finder.service.cache.IanaBootstrapCacheService;
 import com.domainsugester.domain_finder.service.TldAvailabilityService;
 import com.microsoft.playwright.*;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +15,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class HostingerTldAvailabilityService implements TldAvailabilityService {
 
+    private final WhoisService whoisService;
     @Value("${playwright.server.url:}")
     private String playwrightServerUrl;
     private final IanaBootstrapCacheService ianaBootstrapCacheService;
@@ -40,9 +41,7 @@ public class HostingerTldAvailabilityService implements TldAvailabilityService {
 
             String result = response.text();
             log.info("TLDs Successfully catched. Status: {}", response.status());
-
             browser.close();
-            System.out.println(result);
             return parseAvaliableTlds(result);
 
         } catch (Exception e) {
@@ -55,7 +54,6 @@ public class HostingerTldAvailabilityService implements TldAvailabilityService {
         String[] tldArray = tlds.split(",");
         for (String tld : tldArray) {
             tld = tld.substring(1, tld.length() - 1);
-            System.out.println(tld);
             map.put("hostinger:tld:" + tld, getRdapUrl(tld));
         }
 
@@ -69,11 +67,9 @@ public class HostingerTldAvailabilityService implements TldAvailabilityService {
         String rdapUrl = ianaBootstrapCacheService.get("iana:tld:" + tld);
 
         if(rdapUrl == null){
-            return "unavailable";
+            return whoisService.getWhoisServerUrl(tld);
         }
-        System.out.println(rdapUrl);
         return rdapUrl;
     }
-
 
 }

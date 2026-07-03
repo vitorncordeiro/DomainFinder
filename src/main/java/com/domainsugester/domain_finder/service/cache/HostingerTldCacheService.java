@@ -1,4 +1,4 @@
-package com.domainsugester.domain_finder.cache;
+package com.domainsugester.domain_finder.service.cache;
 
 import com.domainsugester.domain_finder.dto.response.TldCachedResponse;
 import com.domainsugester.domain_finder.mapper.CacheBootstrapMapper;

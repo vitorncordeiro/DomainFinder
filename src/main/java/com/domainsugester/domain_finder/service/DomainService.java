@@ -1,17 +1,13 @@
 package com.domainsugester.domain_finder.service;
 
-import com.domainsugester.domain_finder.cache.HostingerTldCacheService;
+import com.domainsugester.domain_finder.service.cache.HostingerTldCacheService;
 import com.domainsugester.domain_finder.client.RdapClient;
 
-import com.domainsugester.domain_finder.dto.request.DomainRequest;
-import com.domainsugester.domain_finder.dto.response.DomainResponse;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

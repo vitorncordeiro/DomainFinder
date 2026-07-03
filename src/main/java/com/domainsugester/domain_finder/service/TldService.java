@@ -1,8 +1,7 @@
 package com.domainsugester.domain_finder.service;
 
-import com.domainsugester.domain_finder.cache.HostingerTldCacheService;
-import com.domainsugester.domain_finder.cache.IanaBootstrapCacheService;
-import com.domainsugester.domain_finder.cache.TldCacheService;
+import com.domainsugester.domain_finder.service.cache.HostingerTldCacheService;
+import com.domainsugester.domain_finder.service.cache.IanaBootstrapCacheService;
 import com.domainsugester.domain_finder.service.hostinger.HostingerTldAvailabilityService;
 import com.domainsugester.domain_finder.service.iana.IanaBootstrapService;
 import jakarta.annotation.PostConstruct;
