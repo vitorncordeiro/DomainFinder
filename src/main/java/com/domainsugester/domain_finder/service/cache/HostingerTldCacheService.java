@@ -1,7 +1,7 @@
 package com.domainsugester.domain_finder.service.cache;
 
+import com.domainsugester.domain_finder.dto.response.HostingerTldCachedResponse;
 import com.domainsugester.domain_finder.dto.response.TldCachedResponse;
-import com.domainsugester.domain_finder.mapper.CacheBootstrapMapper;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.Cursor;
@@ -59,7 +59,7 @@ public class HostingerTldCacheService implements TldCacheService {
             map.put(key, ops.get(key).toString());
         });
 
-        return CacheBootstrapMapper.toHosingerCacheResponse(map);
+        return new HostingerTldCachedResponse(map);
     }
     private Set<String> scanKeys(String keyPrefix){
         Set<String> keys = new HashSet<>();

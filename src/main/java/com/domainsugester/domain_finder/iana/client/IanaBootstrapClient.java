@@ -1,6 +1,6 @@
-package com.domainsugester.domain_finder.client;
+package com.domainsugester.domain_finder.iana.client;
 
-import com.domainsugester.domain_finder.dto.external.iana.IanaBootstrapResponse;
+import com.domainsugester.domain_finder.iana.dto.IanaBootstrapResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 

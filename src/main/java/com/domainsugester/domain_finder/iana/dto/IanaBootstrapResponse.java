@@ -1,4 +1,4 @@
-package com.domainsugester.domain_finder.dto.external.iana;
+package com.domainsugester.domain_finder.iana.dto;
 
 import java.time.Instant;
 import java.util.List;

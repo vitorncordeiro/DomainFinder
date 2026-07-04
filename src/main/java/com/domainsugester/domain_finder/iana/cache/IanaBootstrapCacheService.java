@@ -1,7 +1,8 @@
-package com.domainsugester.domain_finder.service.cache;
+package com.domainsugester.domain_finder.iana.cache;
 
 import com.domainsugester.domain_finder.dto.response.IanaTldCachedResponse;
 import com.domainsugester.domain_finder.dto.response.TldCachedResponse;
+import com.domainsugester.domain_finder.service.cache.TldCacheService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -17,7 +18,7 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
-public class IanaBootstrapCacheService implements TldCacheService{
+public class IanaBootstrapCacheService implements TldCacheService {
     private final RedisTemplate<String, Object> redisTemplate;
     private final Duration TTL = Duration.ofDays(10);
 

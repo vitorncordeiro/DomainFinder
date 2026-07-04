@@ -1,4 +1,4 @@
-package com.domainsugester.domain_finder.controller;
+package com.domainsugester.domain_finder.auth.controller;
 
 import com.domainsugester.domain_finder.user.dto.UserResponse;
 import com.domainsugester.domain_finder.user.model.UserModel;
