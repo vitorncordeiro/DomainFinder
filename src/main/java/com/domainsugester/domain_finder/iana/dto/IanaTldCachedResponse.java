@@ -1,4 +1,6 @@
-package com.domainsugester.domain_finder.dto.response;
+package com.domainsugester.domain_finder.iana.dto;
+
+import com.domainsugester.domain_finder.tld.dto.TldCachedResponse;
 
 import java.util.Map;
 

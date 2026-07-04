@@ -1,9 +1,9 @@
 package com.domainsugester.domain_finder.iana.service;
 
-import com.domainsugester.domain_finder.service.cache.TldCacheService;
+import com.domainsugester.domain_finder.tld.cache.TldCacheService;
 import com.domainsugester.domain_finder.iana.client.IanaBootstrapClient;
 import com.domainsugester.domain_finder.iana.dto.IanaBootstrapResponse;
-import com.domainsugester.domain_finder.dto.response.TldCachedResponse;
+import com.domainsugester.domain_finder.tld.dto.TldCachedResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

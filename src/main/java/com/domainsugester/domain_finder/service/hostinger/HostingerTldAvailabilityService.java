@@ -2,7 +2,7 @@ package com.domainsugester.domain_finder.service.hostinger;
 
 import com.domainsugester.domain_finder.whois.service.WhoisService;
 import com.domainsugester.domain_finder.iana.cache.IanaBootstrapCacheService;
-import com.domainsugester.domain_finder.service.TldAvailabilityService;
+import com.domainsugester.domain_finder.tld.service.TldAvailabilityService;
 import com.microsoft.playwright.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

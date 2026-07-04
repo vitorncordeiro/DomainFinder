@@ -1,5 +1,5 @@
 package com.domainsugester.domain_finder.iana.controller;
-import com.domainsugester.domain_finder.dto.response.TldCachedResponse;
+import com.domainsugester.domain_finder.tld.dto.TldCachedResponse;
 import com.domainsugester.domain_finder.iana.service.IanaBootstrapService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

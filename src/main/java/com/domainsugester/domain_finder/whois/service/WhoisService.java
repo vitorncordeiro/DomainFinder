@@ -1,6 +1,6 @@
 package com.domainsugester.domain_finder.whois.service;
 
-import com.domainsugester.domain_finder.client.IanaClient;
+import com.domainsugester.domain_finder.iana.client.IanaClient;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.net.whois.WhoisClient;
 import org.springframework.stereotype.Service;

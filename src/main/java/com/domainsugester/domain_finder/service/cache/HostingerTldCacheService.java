@@ -1,7 +1,8 @@
 package com.domainsugester.domain_finder.service.cache;
 
 import com.domainsugester.domain_finder.dto.response.HostingerTldCachedResponse;
-import com.domainsugester.domain_finder.dto.response.TldCachedResponse;
+import com.domainsugester.domain_finder.tld.dto.TldCachedResponse;
+import com.domainsugester.domain_finder.tld.cache.TldCacheService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.Cursor;

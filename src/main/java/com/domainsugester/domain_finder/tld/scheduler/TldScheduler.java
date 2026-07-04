@@ -1,7 +1,6 @@
-package com.domainsugester.domain_finder.scheduler;
+package com.domainsugester.domain_finder.tld.scheduler;
 
-import com.domainsugester.domain_finder.service.TldService;
-import jakarta.annotation.PostConstruct;
+import com.domainsugester.domain_finder.tld.service.TldService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.retry.annotation.Retryable;

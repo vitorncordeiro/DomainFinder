@@ -1,8 +1,8 @@
 package com.domainsugester.domain_finder.iana.cache;
 
-import com.domainsugester.domain_finder.dto.response.IanaTldCachedResponse;
-import com.domainsugester.domain_finder.dto.response.TldCachedResponse;
-import com.domainsugester.domain_finder.service.cache.TldCacheService;
+import com.domainsugester.domain_finder.iana.dto.IanaTldCachedResponse;
+import com.domainsugester.domain_finder.tld.dto.TldCachedResponse;
+import com.domainsugester.domain_finder.tld.cache.TldCacheService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.RedisTemplate;
