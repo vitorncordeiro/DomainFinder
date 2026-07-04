@@ -1,6 +1,6 @@
-package com.domainsugester.domain_finder.controller;
+package com.domainsugester.domain_finder.domain.controller;
 
-import com.domainsugester.domain_finder.service.DomainService;
+import com.domainsugester.domain_finder.domain.service.DomainService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,12 +1,14 @@
-package com.domainsugester.domain_finder.service;
+package com.domainsugester.domain_finder.domain.service;
 
 import com.domainsugester.domain_finder.service.cache.HostingerTldCacheService;
 import com.domainsugester.domain_finder.client.RdapClient;
 
+import com.domainsugester.domain_finder.whois.service.WhoisService;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.net.URI;
 
 @Service
@@ -14,10 +16,18 @@ import java.net.URI;
 public class DomainService {
     private final RdapClient rdapClient;
     private final HostingerTldCacheService hostingerTldCacheService;
+    private final WhoisService whoisService;
 
-    public String getDomain(String domain){
+    public String getDomain(String domain) throws IOException {
         System.out.println(domain);
-        String rdapUrl = getRdapUrl(domain);
+        String serverUrl = getRdapUrl(domain);
+        if (serverUrl.contains("whois")){
+            return whoisService.getWhoisResponse(domain, serverUrl);
+        }else{
+            return getRdapResponse(domain, serverUrl);
+        }
+    }
+    private String getRdapResponse(String targetDomain, String rdapUrl){
         URI uri = URI.create(rdapUrl);
 
         try {

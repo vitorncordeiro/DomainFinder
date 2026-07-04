@@ -1,13 +1,11 @@
-package com.domainsugester.domain_finder.service;
+package com.domainsugester.domain_finder.whois.service;
 
 import com.domainsugester.domain_finder.client.IanaClient;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.net.whois.WhoisClient;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
-import java.net.Socket;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
