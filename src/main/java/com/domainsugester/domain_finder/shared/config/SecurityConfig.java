@@ -1,4 +1,4 @@
-package com.domainsugester.domain_finder.config;
+package com.domainsugester.domain_finder.shared.config;
 
 import com.domainsugester.domain_finder.auth.service.CustomOidcUserService;
 import jakarta.servlet.http.HttpServletResponse;

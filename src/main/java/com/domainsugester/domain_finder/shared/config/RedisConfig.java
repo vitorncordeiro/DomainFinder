@@ -1,4 +1,4 @@
-package com.domainsugester.domain_finder.config;
+package com.domainsugester.domain_finder.shared.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
