@@ -1,4 +1,4 @@
-package com.domainsugester.domain_finder.dto.response;
+package com.domainsugester.domain_finder.user.dto;
 
 public record UserResponse(
         String id,

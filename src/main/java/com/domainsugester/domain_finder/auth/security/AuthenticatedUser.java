@@ -1,6 +1,6 @@
 package com.domainsugester.domain_finder.auth.security;
 
-import com.domainsugester.domain_finder.model.UserModel;
+import com.domainsugester.domain_finder.user.model.UserModel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

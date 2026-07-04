@@ -1,4 +1,4 @@
-package com.domainsugester.domain_finder.model;
+package com.domainsugester.domain_finder.user.model;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;

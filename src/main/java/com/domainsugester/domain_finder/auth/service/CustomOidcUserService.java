@@ -1,8 +1,8 @@
 package com.domainsugester.domain_finder.auth.service;
 
 import com.domainsugester.domain_finder.auth.security.AuthenticatedUser;
-import com.domainsugester.domain_finder.model.UserModel;
-import com.domainsugester.domain_finder.repository.UserRepository;
+import com.domainsugester.domain_finder.user.model.UserModel;
+import com.domainsugester.domain_finder.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;

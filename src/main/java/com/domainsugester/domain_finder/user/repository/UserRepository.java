@@ -1,6 +1,6 @@
-package com.domainsugester.domain_finder.repository;
+package com.domainsugester.domain_finder.user.repository;
 
-import com.domainsugester.domain_finder.model.UserModel;
+import com.domainsugester.domain_finder.user.model.UserModel;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
