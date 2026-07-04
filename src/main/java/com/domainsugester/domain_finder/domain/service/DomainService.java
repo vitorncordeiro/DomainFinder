@@ -1,6 +1,6 @@
 package com.domainsugester.domain_finder.domain.service;
 
-import com.domainsugester.domain_finder.service.cache.HostingerTldCacheService;
+import com.domainsugester.domain_finder.registrar.hostinger.cache.HostingerTldCacheService;
 import com.domainsugester.domain_finder.client.RdapClient;
 
 import com.domainsugester.domain_finder.whois.service.WhoisService;

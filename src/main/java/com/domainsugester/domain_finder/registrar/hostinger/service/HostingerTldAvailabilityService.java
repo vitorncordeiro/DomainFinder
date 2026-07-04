@@ -1,4 +1,4 @@
-package com.domainsugester.domain_finder.service.hostinger;
+package com.domainsugester.domain_finder.registrar.hostinger.service;
 
 import com.domainsugester.domain_finder.whois.service.WhoisService;
 import com.domainsugester.domain_finder.iana.cache.IanaBootstrapCacheService;

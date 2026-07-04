@@ -1,6 +1,6 @@
-package com.domainsugester.domain_finder.service.cache;
+package com.domainsugester.domain_finder.registrar.hostinger.cache;
 
-import com.domainsugester.domain_finder.dto.response.HostingerTldCachedResponse;
+import com.domainsugester.domain_finder.registrar.hostinger.dto.HostingerTldCachedResponse;
 import com.domainsugester.domain_finder.tld.dto.TldCachedResponse;
 import com.domainsugester.domain_finder.tld.cache.TldCacheService;
 import jakarta.annotation.PostConstruct;

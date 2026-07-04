@@ -1,8 +1,8 @@
 package com.domainsugester.domain_finder.tld.service;
 
-import com.domainsugester.domain_finder.service.cache.HostingerTldCacheService;
+import com.domainsugester.domain_finder.registrar.hostinger.cache.HostingerTldCacheService;
 import com.domainsugester.domain_finder.iana.cache.IanaBootstrapCacheService;
-import com.domainsugester.domain_finder.service.hostinger.HostingerTldAvailabilityService;
+import com.domainsugester.domain_finder.registrar.hostinger.service.HostingerTldAvailabilityService;
 import com.domainsugester.domain_finder.iana.service.IanaBootstrapService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

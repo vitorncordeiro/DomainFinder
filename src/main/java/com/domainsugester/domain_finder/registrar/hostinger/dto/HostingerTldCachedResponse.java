@@ -1,4 +1,4 @@
-package com.domainsugester.domain_finder.dto.response;
+package com.domainsugester.domain_finder.registrar.hostinger.dto;
 
 import com.domainsugester.domain_finder.tld.dto.TldCachedResponse;
 
