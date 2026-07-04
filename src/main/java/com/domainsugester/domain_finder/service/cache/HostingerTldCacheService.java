@@ -2,6 +2,7 @@ package com.domainsugester.domain_finder.service.cache;
 
 import com.domainsugester.domain_finder.dto.response.TldCachedResponse;
 import com.domainsugester.domain_finder.mapper.CacheBootstrapMapper;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -20,6 +21,24 @@ import java.util.Set;
 public class HostingerTldCacheService implements TldCacheService {
     private final RedisTemplate<String, Object> redisTemplate;
     private final Duration TTL = Duration.ofDays(10);
+
+
+    @PostConstruct
+    public void init(){
+        ValueOperations<String, Object> ops = redisTemplate.opsForValue();
+        Set<String> keys = scanKeys("hostinger:tld:*");
+
+        keys.forEach(key -> {
+            if(!ops.get(key).toString().startsWith("http")){
+                System.out.println(key);
+                System.out.println(ops.get(key));
+                System.out.println("\n");
+            }
+
+        });
+        ;
+    }
+
 
     @Override
     public void save(String key, String value) {

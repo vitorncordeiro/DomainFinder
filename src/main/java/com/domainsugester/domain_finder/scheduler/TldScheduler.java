@@ -13,10 +13,7 @@ import org.springframework.stereotype.Component;
 public class TldScheduler {
     private final TldService tldService;
 
-    @PostConstruct
-    public void startRefresh(){
-        refresh();
-    }
+
 
     @Scheduled(fixedRate = 7 * 24 * 60 * 60 * 1000L)
     @Retryable(
