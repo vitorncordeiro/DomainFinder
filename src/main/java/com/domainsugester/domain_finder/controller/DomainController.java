@@ -1,7 +1,5 @@
 package com.domainsugester.domain_finder.controller;
 
-import com.domainsugester.domain_finder.dto.request.DomainRequest;
-import com.domainsugester.domain_finder.dto.response.DomainResponse;
 import com.domainsugester.domain_finder.service.DomainService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
