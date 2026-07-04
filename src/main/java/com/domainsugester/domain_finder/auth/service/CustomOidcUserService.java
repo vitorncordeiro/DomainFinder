@@ -1,20 +1,16 @@
-package com.domainsugester.domain_finder.security;
+package com.domainsugester.domain_finder.auth.service;
 
+import com.domainsugester.domain_finder.auth.security.AuthenticatedUser;
 import com.domainsugester.domain_finder.model.UserModel;
 import com.domainsugester.domain_finder.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
-import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor

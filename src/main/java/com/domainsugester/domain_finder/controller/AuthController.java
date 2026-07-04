@@ -2,7 +2,7 @@ package com.domainsugester.domain_finder.controller;
 
 import com.domainsugester.domain_finder.dto.response.UserResponse;
 import com.domainsugester.domain_finder.model.UserModel;
-import com.domainsugester.domain_finder.security.AuthenticatedUser;
+import com.domainsugester.domain_finder.auth.security.AuthenticatedUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

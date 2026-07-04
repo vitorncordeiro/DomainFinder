@@ -31,7 +31,7 @@ public class DomainService {
         URI uri = URI.create(rdapUrl);
 
         try {
-            Object domainInfo = rdapClient.getDomainInfo(uri, domain);
+            Object domainInfo = rdapClient.getDomainInfo(uri, targetDomain);
             System.out.println(domainInfo);
             return domainInfo.toString();
         }catch (FeignException e){

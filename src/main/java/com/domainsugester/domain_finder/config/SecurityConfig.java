@@ -1,6 +1,6 @@
 package com.domainsugester.domain_finder.config;
 
-import com.domainsugester.domain_finder.security.CustomOidcUserService;
+import com.domainsugester.domain_finder.auth.service.CustomOidcUserService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
