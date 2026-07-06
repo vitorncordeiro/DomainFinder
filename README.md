@@ -53,6 +53,10 @@ The modern standard for querying domain registration data, replacing WHOIS. Each
 - HTTP `200` means the domain is registered — not available.
   Documentation: https://about.rdap.org/
 
+### WHOIS Protocol
+
+Used as a fallback for TLDs that do not have an RDAP server. The application queries the WHOIS server for the TLD and parses the response to determine availability. This is only used when no RDAP server is available for a given TLD.
+
 ### Redis
 Used for two purposes: caching domain search results and the IANA TLD map to avoid redundant lookups, and storing authenticated user sessions via Spring Session.
 Documentation: https://redis.io/docs/
