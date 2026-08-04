@@ -2,6 +2,7 @@ package com.domainsugester.domain_finder.czds.service;
 
 import com.domainsugester.domain_finder.czds.client.AuthenticationClient;
 import com.domainsugester.domain_finder.czds.client.ZoneFileDownloadClient;
+import com.domainsugester.domain_finder.czds.dto.AuthRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -18,13 +19,14 @@ public class ZoneDownloadService {
     private String bearerToken;
 
     public void downloadZoneFiles(){
+        authenticate();
 
     }
 
-    private String authenticate(){
+    private void authenticate(){
         if(bearerToken == null || bearerToken.isEmpty()) {
-            bearerToken = authenticationClient.authenticate(icannUsername, icannPassword).accessToken();
+            AuthRequest authRequest = new AuthRequest(icannUsername, icannPassword);
+            bearerToken = authenticationClient.authenticate(authRequest).accessToken();
         }
-        return bearerToken;
     }
 }
