@@ -35,3 +35,13 @@ playwright:
 rdap:
   client:
     url: http://rdap.org
+icann:
+  authentication:
+    base-url: https://account-api.icann.org
+  account:
+    username: ${ICANN_ACCOUNT_USERNAME}
+    password: ${ICANN_ACCOUNT_PASSWORD}
+czds:
+  base-url:  https://czds-api.icann.org
+  download-base-url: https://czds-download-api.icann.org
+  directory: ${CZDS_DIRECTORY}
