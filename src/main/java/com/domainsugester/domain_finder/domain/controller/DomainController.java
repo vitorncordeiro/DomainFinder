@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/api/domains")
 @RequiredArgsConstructor
@@ -16,7 +18,7 @@ public class DomainController {
     private final DomainService domainService;
 
     @PostMapping("/{domain}")
-    public ResponseEntity<String> getDomain(@PathVariable String domain){
+    public ResponseEntity<String> getDomain(@PathVariable String domain) throws IOException {
         String response = domainService.getDomain(domain);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

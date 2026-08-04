@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/api/batch")
 @RequiredArgsConstructor
@@ -15,7 +17,8 @@ public class BatchController {
     private final BatchService batchService;
 
     @PostMapping(value="/file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> startBatchProcess(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<String> startBatchProcess(@RequestParam("file") MultipartFile file) throws IOException {
+        batchService.processTextFile(file);
         return ResponseEntity.ok("Batch process started successfully.");
     }
     @PostMapping("/text")
