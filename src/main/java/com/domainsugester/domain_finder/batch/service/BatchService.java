@@ -1,8 +1,16 @@
 package com.domainsugester.domain_finder.batch.service;
 
+import com.domainsugester.domain_finder.batch.cache.BatchCacheService;
+import com.domainsugester.domain_finder.batch.dto.batch.BatchResult;
+import com.domainsugester.domain_finder.batch.dto.batch.DomainBatchInfo;
+import com.domainsugester.domain_finder.batch.dto.request.BatchTextRequest;
 import com.domainsugester.domain_finder.batch.dto.validation.LineError;
-import com.domainsugester.domain_finder.batch.dto.validation.ValidationResult;
-import com.domainsugester.domain_finder.batch.publisher.BatchPublisher;
+import com.domainsugester.domain_finder.batch.dto.validation.FileValidationResult;
+import com.domainsugester.domain_finder.batch.dto.validation.TextValidationResult;
+import com.domainsugester.domain_finder.batch.messaging.events.DomainSubmitedEvent;
+import com.domainsugester.domain_finder.batch.messaging.events.FinishedBatchEvent;
+import com.domainsugester.domain_finder.batch.messaging.publisher.BatchPublisher;
+import com.domainsugester.domain_finder.domain.service.DomainService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,78 +19,115 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class BatchService {
+    private final DomainService domainService;
     private final BatchPublisher batchPublisher;
+    private final BatchCacheService batchCacheService;
     private final int MAX_LINES = 100;
     private final int MAX_FILE_SIZE = 5 * 1024 * 1024;
-
-    public String processTextFile(MultipartFile file) throws IOException {
-
-        validate(file);
-        ValidationResult result = validateAndReadDomains(file);
-        for (String domain : result.validDomains()) {
-            publishMessage(domain);
-            System.out.println(result.errors());
-        }
-        return "ok";
-    }
     private static final Pattern DOMAIN_PATTERN = Pattern.compile(
             "^(?=.{1,253}$)(?!-)[A-Za-z0-9-]{1,63}(?<!-)(\\.[A-Za-z0-9-]{1,63}(?<!-))+$"
     );
 
-    public ValidationResult validateAndReadDomains(MultipartFile file) throws IOException {
+    public void processDomain(DomainSubmitedEvent event) throws IOException {
+        Boolean result = domainService.getDomain(event.domain()) == null ? Boolean.TRUE : Boolean.FALSE;
+        addDomainAvailabilityToBatchResult(event.batchId(), event.domain(), result);
+        if(batchCacheService.getBatchRemaining(event.batchId()) == 1){
+            BatchResult batchResult = batchCacheService.getBatchResult(event.batchId());
+            publishFinishedBatchMessage(batchResult);
+        } else{
+            batchCacheService.decr(event.batchId());
+        }
+    }
+
+    public String processTextRequest(BatchTextRequest domains) {
+        TextValidationResult result = validateDomains(domains);
+        processDomainBatch(new ArrayList<>(result.validDomains()));
+        return "ok";
+    }
+
+    public String processTextFileRequest(MultipartFile file) throws IOException {
+        fileValidation(file);
+        FileValidationResult result = validateAndReadDomains(file);
+        processDomainBatch(result.validDomains());
+        return "ok";
+    }
+
+    private void processDomainBatch(List<String> domains){
+        DomainBatchInfo batchInfo = DomainBatchInfo.builder()
+                .batchId(UUID.randomUUID())
+                .batchRemaining(domains.size())
+                .batchSize(domains.size())
+                .build();
+
+        batchCacheService.saveRemaining(batchInfo.batchId(), batchInfo.batchSize());
+        for (String domain : domains) {
+            publishDomainMessage(domain, batchInfo.batchId());
+        }
+    }
+
+
+    private void addDomainAvailabilityToBatchResult(UUID batchId, String domain, Boolean isAvailable) {
+        BatchResult batchResult = batchCacheService.getBatchResult(batchId);
+        batchResult.domainAvailability().put(domain, isAvailable);
+        batchCacheService.saveBatchResult(batchId, batchResult);
+    }
+
+    private TextValidationResult validateDomains(BatchTextRequest domains){
+        return new TextValidationResult(domains.domains().stream()
+                .map(String::trim)
+                .map(String::toLowerCase)
+                .filter(domain -> DOMAIN_PATTERN.matcher(domain).matches())
+                .collect(Collectors.toSet()));
+    }
+
+    private FileValidationResult validateAndReadDomains(MultipartFile file) throws IOException {
         List<String> validDomains = new ArrayList<>();
         List<LineError> errors = new ArrayList<>();
         Set<String> checked = new HashSet<>();
 
         try (BufferedReader reader = new BufferedReader(
                 new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8))) {
-
             String line;
             int lineNumber = 0;
-
             while ((line = reader.readLine()) != null) {
                 lineNumber++;
-
                 if (lineNumber > MAX_LINES) {
-                    errors.add(new LineError(lineNumber, "Limit of " + MAX_LINES + " lines exceeded."));
-                    break;
+                    throw new IllegalArgumentException("Limit of " + MAX_LINES + " lines exceeded.");
                 }
-
                 String domain = line.trim().toLowerCase();
-
-                if (domain.isEmpty()) continue; // ignora linhas em branco, sem erro
-
+                if (domain.isEmpty()) continue;
                 if (!DOMAIN_PATTERN.matcher(domain).matches()) {
                     errors.add(new LineError(lineNumber, "Invalid domain: '" + domain + "'"));
                     continue;
                 }
-
                 if (!checked.add(domain)) {
                     errors.add(new LineError(lineNumber, "Domain duplicated: '" + domain + "'"));
                     continue;
                 }
-
                 validDomains.add(domain);
             }
         }
-
-        return new ValidationResult(validDomains, errors);
+        return new FileValidationResult(validDomains, errors);
     }
 
-    private void publishMessage(String domain){
-        System.out.println(domain);
+    private void publishDomainMessage(String domain, UUID batchId){
+        DomainSubmitedEvent event = new DomainSubmitedEvent(domain, batchId);
+        batchPublisher.publish(event);
+    }
+    private void publishFinishedBatchMessage(BatchResult batchResult){
+        FinishedBatchEvent event = new FinishedBatchEvent(batchResult.domainAvailability());
+        batchPublisher.publish(event);
     }
 
-    private void validate(MultipartFile file) {
+    private void fileValidation(MultipartFile file) {
+
         if (file.isEmpty()) {
             throw new IllegalArgumentException("File is empty");
         }

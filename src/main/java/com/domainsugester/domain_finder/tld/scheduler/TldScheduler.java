@@ -1,6 +1,7 @@
 package com.domainsugester.domain_finder.tld.scheduler;
 
 import com.domainsugester.domain_finder.tld.service.TldService;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.retry.annotation.Retryable;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class TldScheduler {
     private final TldService tldService;
-
 
 
     @Scheduled(fixedRate = 7 * 24 * 60 * 60 * 1000L)

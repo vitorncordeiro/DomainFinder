@@ -9,8 +9,18 @@ services:
     restart: unless-stopped
   playwright:
     image: mcr.microsoft.com/playwright:v1.61.1-jammy
-    command: npx playwright run-server --port 3000 --host 0.0.0.0
+    command: npx playwright@1.61.0 run-server --port 3000 --host 0.0.0.0
     ports:
       - "3000:3000"
+  rabbitmq:
+    image: rabbitmq:4-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USERNAME}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
 volumes:
   redis_data:

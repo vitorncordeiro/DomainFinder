@@ -18,12 +18,13 @@ public class BatchController {
 
     @PostMapping(value="/file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> startBatchProcess(@RequestParam("file") MultipartFile file) throws IOException {
-        batchService.processTextFile(file);
+        batchService.processTextFileRequest(file);
         return ResponseEntity.ok("Batch process started successfully.");
     }
     @PostMapping("/text")
     public ResponseEntity<String> startBatchProcessByText(
             @RequestBody BatchTextRequest domains) {
+        batchService.processTextRequest(domains);
         return ResponseEntity.ok("Batch process started successfully.");
     }
 }
